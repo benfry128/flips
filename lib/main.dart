@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,15 +31,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _lastFlip = false;
 
-  void _incrementCounter() {
+  void _flipCoin() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _lastFlip = Random().nextBool();
+      if (_lastFlip){
+        _counter++;
+      } else {
+        _counter = 0;
+      }
     });
   }
 
@@ -53,6 +55,20 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ButtonTheme(
+              minWidth: 130,
+              height: 130,
+              child: MaterialButton(
+                onPressed: _flipCoin,
+                shape: CircleBorder(),
+                color: _lastFlip ? Colors.grey : Colors.brown,
+                textColor: Colors.white,
+                child: Text(
+                  _lastFlip ? 'H' : 'T',
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+              )
+            )
           ],
         ),
       ),
