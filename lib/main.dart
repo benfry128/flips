@@ -33,15 +33,16 @@ class _MyAppState extends State<MyApp> {
           )
         )
       ),
-      home: MyHomePage(toggleTheme: _toggleTheme),
+      home: MyHomePage(toggleTheme: _toggleTheme, brightness: _brightness),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.toggleTheme});
+  const MyHomePage({super.key, required this.toggleTheme, required this.brightness});
 
   final VoidCallback toggleTheme;
+  final Brightness brightness;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -92,11 +93,36 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: FloatingActionButton(
-        onPressed: widget.toggleTheme,
+        onPressed: () => _settingsDialogBuilder(context),
         child: Icon(
           Icons.settings,
         )
       ),
+    );
+  }
+
+  Future<void> _settingsDialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select Theme'),
+          content:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('Dark'),
+                Switch(
+                  value: widget.brightness == Brightness.light,
+                  onChanged: (bool value) {
+                    widget.toggleTheme();
+                  },
+                ),
+                const Text('Light'),
+              ]
+            )
+        );
+      }
     );
   }
 }
