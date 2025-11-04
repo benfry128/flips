@@ -5,23 +5,43 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Brightness _brightness = Brightness.light;
+
+  void _toggleTheme() {
+    setState(() {
+      _brightness = _brightness == Brightness.light ? Brightness.dark : Brightness.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flips',
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: _brightness,
+        textTheme: TextTheme(
+          displayMedium: TextStyle(
+            color: Colors.white
+          )
+        )
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(toggleTheme: _toggleTheme),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required this.toggleTheme});
+
+  final VoidCallback toggleTheme;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -69,6 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: FloatingActionButton(
+        onPressed: widget.toggleTheme,
+        child: Icon(
+          Icons.settings,
+        )
       ),
     );
   }
