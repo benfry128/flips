@@ -51,12 +51,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _lastFlip = false;
+  double _plusOneY = 0;
+  double _opacity = 0;
 
   void _flipCoin() {
     setState(() {
       _lastFlip = Random().nextBool();
       if (_lastFlip){
         _counter++;
+        _plusOneY = 30;
+        _opacity = 1;
       } else {
         _counter = 0;
       }
@@ -70,9 +74,31 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.displayLarge,
+            Stack(
+              children: [
+                Center(
+                  child: Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  )
+                ),
+                AnimatedPositioned(
+                  duration: Duration(milliseconds: 500),
+                  left: MediaQuery.sizeOf(context).width / 2 + 20 + _plusOneY,
+                  onEnd: () => setState(() {_plusOneY = 0;}),
+                  child: AnimatedOpacity(
+                      opacity: _opacity,
+                      duration: Duration(milliseconds: 250),
+                      onEnd: () => setState(() {
+                        _opacity = 0;
+                      }),
+                      child: Text(
+                        '+1',
+                        style: Theme.of(context).textTheme.displaySmall,
+                      )
+                  )
+                )
+              ]
             ),
             ButtonTheme(
               minWidth: 130,
