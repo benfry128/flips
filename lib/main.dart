@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             ButtonTheme(
               minWidth: 130,
