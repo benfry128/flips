@@ -93,12 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ),
                 AnimatedPositioned(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   left: MediaQuery.sizeOf(context).width / 2 + 20 + _plusOneY,
                   onEnd: () => setState(() {_plusOneY = 0;}),
                   child: AnimatedOpacity(
                       opacity: _opacity,
-                      duration: Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 250),
                       onEnd: () => setState(() {
                         _opacity = 0;
                       }),
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: _flipping ? AnimatedCrossFade(
                 firstChild: MaterialButton(
                   onPressed: null,
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   disabledColor: Colors.grey,
                   textColor: Colors.white,
                   child: Text(
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 secondChild: MaterialButton(
                   onPressed: null,
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   disabledColor: Colors.brown,
                   textColor: Colors.white,
                   child: Text(
@@ -135,16 +135,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 crossFadeState: _startOrEnd ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                duration: Duration(milliseconds: 1250),
-                firstCurve: Split(0.5, beginCurve: Split(0.5, beginCurve: SawTooth(20), endCurve: SawTooth(10)), endCurve: SawTooth(3)).flipped,
-                secondCurve: Split(0.5, beginCurve: Split(0.5, beginCurve: SawTooth(20), endCurve: SawTooth(10)), endCurve: SawTooth(3)),
+                duration: const Duration(milliseconds: 1250),
+                firstCurve: const Split(0.5, beginCurve: Split(0.5, beginCurve: SawTooth(20), endCurve: SawTooth(10)), endCurve: SawTooth(3)).flipped,
+                secondCurve: const Split(0.5, beginCurve: Split(0.5, beginCurve: SawTooth(20), endCurve: SawTooth(10)), endCurve: SawTooth(3)),
               ) : MaterialButton(
                 onPressed: () => setState(() {
                   _flipping = true;
                   Timer(const Duration(milliseconds: 10), _animate);
                   Timer(const Duration(milliseconds: 1250), _flipCoin);
                 }),
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 color: _lastFlip ? Colors.grey : Colors.brown,
                 textColor: Colors.white,
                 child: Text(
