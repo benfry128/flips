@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -51,11 +52,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _lastFlip = false;
+  bool _flipping = false;
+  bool _startOrEnd = false;
   double _plusOneY = 0;
   double _opacity = 0;
 
   void _flipCoin() {
     setState(() {
+      _flipping = false;
       _lastFlip = Random().nextBool();
       if (_lastFlip){
         _counter++;
@@ -64,6 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         _counter = 0;
       }
+    });
+  }
+
+  void _animate() {
+    setState(() {
+      _startOrEnd = !_startOrEnd;
     });
   }
 
@@ -103,8 +113,37 @@ class _MyHomePageState extends State<MyHomePage> {
             ButtonTheme(
               minWidth: 130,
               height: 130,
-              child: MaterialButton(
-                onPressed: _flipCoin,
+              child: _flipping ? AnimatedCrossFade(
+                firstChild: MaterialButton(
+                  onPressed: null,
+                  shape: CircleBorder(),
+                  disabledColor: Colors.grey,
+                  textColor: Colors.white,
+                  child: Text(
+                    'H',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                ),
+                secondChild: MaterialButton(
+                  onPressed: null,
+                  shape: CircleBorder(),
+                  disabledColor: Colors.brown,
+                  textColor: Colors.white,
+                  child: Text(
+                    'T',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                ),
+                crossFadeState: _startOrEnd ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                duration: Duration(milliseconds: 1250),
+                firstCurve: Split(0.5, beginCurve: Split(0.5, beginCurve: SawTooth(20), endCurve: SawTooth(10)), endCurve: SawTooth(3)).flipped,
+                secondCurve: Split(0.5, beginCurve: Split(0.5, beginCurve: SawTooth(20), endCurve: SawTooth(10)), endCurve: SawTooth(3)),
+              ) : MaterialButton(
+                onPressed: () => setState(() {
+                  _flipping = true;
+                  Timer(const Duration(milliseconds: 10), _animate);
+                  Timer(const Duration(milliseconds: 1250), _flipCoin);
+                }),
                 shape: CircleBorder(),
                 color: _lastFlip ? Colors.grey : Colors.brown,
                 textColor: Colors.white,
